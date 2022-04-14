@@ -1,16 +1,12 @@
-#include "/root/Development/rom-623/src/tasks/logic/aton_landing.c"
+#include "/root/Development/home_security/src/sensors/task_list.h"
 
 
 int hard;
 void setup() {
-
-//setuping up motors
-aileronL.attach(2);
-aileronR.attach(4);
-elevator.attach(6);
-esc.attach(12);
-arm();
-
+pinMode(2, OUTPUT);
+pinMode(3, OUTPUT);
+pinMode(4, OUTPUT);
+pinMode(5, OUTPUT);
 //Possible serial output for testing
 Serial.begin(9600);
 
@@ -26,25 +22,25 @@ Serial.begin(9600);
     //JOB2
     const struct TimeInfo t_info2 = createTInfo(1, 10, 1, 1, 2, 0, 0);
     const struct ExecConstraints ex_con2 = createExCons(NULL, NULL, 0, 2);
-    const struct Job job2 = createJob(ex_con2, t_info2, 6);
+    const struct Job job2 = createJob(ex_con2, t_info2, 2);
 
-    //JOB3
-    const struct TimeInfo t_info3 = createTInfo(1, 10, 2, 1, 3, 0, 0);
-    const struct ExecConstraints ex_con3 = createExCons(NULL, NULL, 0, 3);
-    const struct Job job3 = createJob(ex_con3, t_info3, 8);
+    //job4
+    const struct TimeInfo t_info4 = createTInfo(1, 10, 5, 2, 4, 1, 0);
+    const struct ExecConstraints ex_con4 = createExCons(NULL, NULL, 0, 4);
+    const struct Job job4 = createJob(ex_con4, t_info4, 4);
 
-    //JOB4 preflight
-        const struct TimeInfo t_info4 = createTInfo(1, 10, 1, 1, 10, 0, 0);
-        const struct ExecConstraints ex_con4 = createExCons(NULL, NULL, 0, 4);
-        const struct Job job4 = createJob(ex_con4, t_info4, 11);
+    //job5
+    const struct TimeInfo t_info5 = createTInfo(1, 10, 5, 1, 2, 1, 0);
+    const struct ExecConstraints ex_con5 = createExCons(NULL, NULL, 0, 5);
+    const struct Job job5 = createJob(ex_con5, t_info5, 5);
 
     //Setting the instructions for the jobs
     //func_type, func_ptr
-    addInstruction(1, altitude);
-    addInstruction(2, orient);
-    addInstruction(3, groundClearance);
-    addInstruction(4, postTransFlight);
-    addInstruction(5, preTransFlight);
+    addInstruction(1, temp);
+    addInstruction(2, isHeatDanger);
+    addInstruction(3, alertHeatDanger);
+    addInstruction(4, laser);
+    addInstruction(5, isLaserTriped);
 
 
     //Zeroing all lists
@@ -52,8 +48,8 @@ Serial.begin(9600);
     //Adding the tasks
     addTask(job1, que);
     addTask(job2, que);
-    addTask(job3, que);
     addTask(job4, que);
+    addTask(job5, que);
 
     //chacking if the schudle is feasible
     //printf("Is feasible: %d\n", schedulerFeasibilty());
